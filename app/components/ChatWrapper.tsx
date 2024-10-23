@@ -7,8 +7,8 @@ interface ChatWrapperProps {
 
 const ChatWrapper: React.FC<ChatWrapperProps> = ({ children }) => {
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className=" rounded-lg p-6 w-full md:w-4/6 lg:w-4/6">
+    <div className="flex flex-col justify-between min-h-screen w-full md:w-4/6 lg:w-4/6">
+      <div className="rounded-lg p-6 w-full">
         {children}
       </div>
     </div>
@@ -16,3 +16,4 @@ const ChatWrapper: React.FC<ChatWrapperProps> = ({ children }) => {
 };
 
 export default ChatWrapper;
+

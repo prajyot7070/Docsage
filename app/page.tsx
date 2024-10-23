@@ -11,12 +11,24 @@ import { StreamOptions } from "stream";
 import ChatWrapper from "./components/ChatWrapper";
 import UserChat from "./components/UserChat";
 import AIChat from "./components/AIChat";
-
+import { InfiniteMovingCards } from "./components/infinite-moving-cards";
+import { title } from "framer-motion/client";
+import { ImageUp } from "lucide-react";
+import python from "../app/assets/python_logo.png"
+import cLogo from "../app/assets/cLogo.png"
+import cppLogo from "../app/assets/cppLogo.png"
+import javaLogo from "../app/assets/javaLogo.png"
 
 export default function Home() {
   //State to manage whether to show the chat interface
   const [isChatInterface, setisChatInterface] = useState(false);
-
+  
+  const imageItems = [
+        {imageUrl: python},
+        {imageUrl: cLogo},
+        {imageUrl: cppLogo},
+        {imageUrl: javaLogo},
+      ]
   //State to hold messages
   const [messages, setMessages] = useState< {sender: 'user' | 'ai';content: string}[] > ([]);
 
@@ -71,9 +83,14 @@ export default function Home() {
         {" "}
          Programming Guides
       </motion.h1>
+      
+      {/* Moving Cards */}
+            
+      <InfiniteMovingCards items={imageItems} />
+
       {/* Search Bar */}
       {!isChatInterface && (
-          <div className="mt-8 w-full flex justify-center">
+          <div className="mt-8 w-full flex justify-center fixed bottom-10 mb-20 left-0">
           <PlaceholdersAndVanishInput
             placeholders={['Search for documentation...', 'Ask a question...']}
             // onChange={() => {}}
@@ -92,7 +109,7 @@ export default function Home() {
     </div>
 
     {/* Chat Interface */}
-      <div className="relative z-10 w-full flex justify-center">
+      <div className="relative z-10 w-full flex justify-center flex-grow">
         {isChatInterface && (
           <ChatWrapper>
             {messages.map((message, index) =>
@@ -104,9 +121,9 @@ export default function Home() {
             )}
 
             {/* Input for new queries */}
-            <div className="mt-4">
+            <div className="mt-8 w-full flex justify-center pb-20 left-0">
               <PlaceholdersAndVanishInput
-                placeholders={['Type your message...']}
+                placeholders={['Type your message...', 'What is list in Python ?']}
                 onSubmit={(e) => {
                   e.preventDefault();
                   const formData = new FormData(e.currentTarget);
