@@ -14,21 +14,12 @@ import AIChat from "./components/AIChat";
 import { InfiniteMovingCards } from "./components/infinite-moving-cards";
 import { title } from "framer-motion/client";
 import { ImageUp } from "lucide-react";
-import python from "../app/assets/python_logo.png"
-import cLogo from "../app/assets/cLogo.png"
-import cppLogo from "../app/assets/cppLogo.png"
-import javaLogo from "../app/assets/javaLogo.png"
+import { Logo } from "./components/Logo";
 
 export default function Home() {
   //State to manage whether to show the chat interface
   const [isChatInterface, setisChatInterface] = useState(false);
   
-  const imageItems = [
-        {imageUrl: python},
-        {imageUrl: cLogo},
-        {imageUrl: cppLogo},
-        {imageUrl: javaLogo},
-      ]
   //State to hold messages
   const [messages, setMessages] = useState< {sender: 'user' | 'ai';content: string}[] > ([]);
 
@@ -57,6 +48,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
+    {/*Main Logo*/}
+    <div className="fixed inset-0 z-10">
+    <Logo />
+    </div>
     <div className="fixed inset-0 z-0">
     {/* Hero Section with Tag-line */}
     <HeroHighlight isChatInterface={isChatInterface}>
@@ -86,7 +81,7 @@ export default function Home() {
       
       {/* Moving Cards */}
             
-      <InfiniteMovingCards items={imageItems} />
+      <InfiniteMovingCards/>
 
       {/* Search Bar */}
       {!isChatInterface && (

@@ -89,7 +89,7 @@ export const InfiniteMovingCards = ({
         {logos.map((logo, idx) => (
           <li
             key={idx}
-            className="flex-shrink-0 px-3 "
+            className="flex-shrink-0 px-3 mt-5"
           >
             <Image 
               src={logo}
