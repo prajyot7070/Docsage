@@ -9,10 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tabler/icons-react": "^3.23.0",
     "@types/react-syntax-highlighter": "^15.5.13",
     "axios": "^1.7.7",
     "clsx": "^2.1.1",
-    "framer-motion": "^11.5.4",
+    "framer-motion": "^11.11.15",
     "lucide-react": "^0.441.0",
     "markdown-to-jsx": "^7.5.0",
     "mini-svg-data-uri": "^1.4.4",
@@ -22,7 +23,7 @@
     "react-markdown": "^9.0.1",
     "react-syntax-highlighter": "^15.5.0",
     "remark-gfm": "^4.0.0",
-    "tailwind-merge": "^2.5.2"
+    "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {
     "@types/node": "^20",

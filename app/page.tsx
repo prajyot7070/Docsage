@@ -1,6 +1,12 @@
 "use client"
 
 import Image from "next/image";
+import {
+  IconArrowLeft,
+  IconBrandTabler,
+  IconSettings,
+  IconUserBolt,
+} from "@tabler/icons-react";
 import { HeroHighlight, Highlight } from "./components/hero-highlight";
 import { motion } from "framer-motion";
 import { PlaceholdersAndVanishInput } from "./components/placeholders-and-vanish-input";
@@ -11,6 +17,7 @@ import { StreamOptions } from "stream";
 import ChatWrapper from "./components/ChatWrapper";
 import UserChat from "./components/UserChat";
 import AIChat from "./components/AIChat";
+import {Sidebar, SidebarBody,DesktopSidebar, SidebarLink } from "./components/sidebar";
 import { InfiniteMovingCards } from "./components/infinite-moving-cards";
 import { title } from "framer-motion/client";
 import { ImageUp } from "lucide-react";
@@ -23,6 +30,47 @@ export default function Home() {
   //State to hold messages
   const [messages, setMessages] = useState< {sender: 'user' | 'ai';content: string}[] > ([]);
 
+  //selected language
+  const [selectedLanguage, setSelectedLanuage] = useState(() => {
+
+    });
+  
+  //links for the sidebar
+  const links = [
+    {
+      label: "Dashboard",
+      href: "#",
+      icon: (
+        <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+    },
+    {
+      label: "Profile",
+      href: "#",
+      icon: (
+        <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+    },
+    {
+      label: "Settings",
+      href: "#",
+      icon: (
+        <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+    },
+    {
+      label: "Logout",
+      href: "#",
+      icon: (
+        <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+    },
+    {
+      label: "languages",
+      href: "#",
+    }
+  ];
+  const [open, setOpen] = useState(false);
   //Handle user query submission
   const handleQuerySubmit = async (query: string) => {
     //hide the hero text
@@ -34,7 +82,7 @@ export default function Home() {
     ]);
     // Sending request
     try{
-      const response = await axios.post('api/query', {query: query, language: 'python'}); //hardcoding python change that when multiple langs are supported
+      const response = await axios.post('api/query', {query: query, language: selectedLanguage}); //hardcoding python change that when multiple langs are supported
       const aiResponse = response.data;
       //add airesponse to convo
       setMessages((prevMessages) => [
@@ -49,7 +97,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
     {/*Main Logo*/}
-    <div className="fixed inset-0 z-10">
+    <div className="fixed inset-0 z-1">
     <Logo />
     </div>
     <div className="fixed inset-0 z-0">
@@ -78,11 +126,25 @@ export default function Home() {
         {" "}
          Programming Guides
       </motion.h1>
-      
+
+      {/* Sidebar */}
+      <div className="fixed inset-0 z-0">
+      <Sidebar open={open} setOpen={setOpen}>
+        <SidebarBody className="justify-between gap-10">
+        <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+          <div className="flex flex-col">
+              {links.map((link, idx) => (
+                <SidebarLink key={idx} link={link} />
+              ))}
+            </div>
+        </div>
+        </SidebarBody>
+      </Sidebar>
+      </div>
+
       {/* Moving Cards */}
             
       <InfiniteMovingCards/>
-
       {/* Search Bar */}
       {!isChatInterface && (
           <div className="mt-8 w-full flex justify-center fixed bottom-10 mb-20 left-0">
