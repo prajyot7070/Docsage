@@ -12,7 +12,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code, language }) => {
   const [copied, setCopied] = useState(false);
 
   const copyCode = () => {
-    navigator.clipboard.writeText(code);
+    navigator.clipboard.writeText(code)
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import SessionWrapper from "@/components/SessionWrapper";
+import { SessionProvider } from "next-auth/react";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -23,7 +25,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  
+
   return (
+  <SessionWrapper>
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -31,5 +37,6 @@ export default function RootLayout({
         {children}
       </body>
     </html>
+  </SessionWrapper>
   );
 }

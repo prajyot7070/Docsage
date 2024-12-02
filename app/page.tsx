@@ -5,6 +5,7 @@ import {
   IconArrowLeft,
   IconBrandTabler,
   IconSettings,
+  IconUser,
   IconUserBolt,
 } from "@tabler/icons-react";
 import { HeroHighlight, Highlight } from "./components/hero-highlight";
@@ -21,6 +22,7 @@ import {Sidebar, SidebarBody,DesktopSidebar, SidebarLink } from "./components/si
 import { InfiniteMovingCards } from "./components/infinite-moving-cards";
 import { title } from "framer-motion/client";
 import { ImageUp } from "lucide-react";
+import {signIn, signOut, useSession} from "next-auth/react"
 import { Logo } from "./components/Logo";
 
 export default function Home() {
@@ -34,7 +36,7 @@ export default function Home() {
   const [selectedLanguage, setSelectedLanuage] = useState(() => {
 
     });
-  
+  const { data: session } = useSession();
   //links for the sidebar
   const links = [
     {
@@ -45,21 +47,16 @@ export default function Home() {
       ),
     },
     {
-      label: "Profile",
+      label: "Login",
+      onClick: signIn,
       href: "#",
       icon: (
-        <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "Settings",
-      href: "#",
-      icon: (
-        <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconUser className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
       label: "Logout",
+      onClick: signOut,
       href: "#",
       icon: (
         <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
@@ -82,7 +79,7 @@ export default function Home() {
     ]);
     // Sending request
     try{
-      const response = await axios.post('api/query', {query: query, language: selectedLanguage}); //hardcoding python change that when multiple langs are supported
+      const response = await axios.post('api/query', {query: query, language: 'python'}); //hardcoding python change that when multiple langs are supported
       const aiResponse = response.data;
       //add airesponse to convo
       setMessages((prevMessages) => [
@@ -136,7 +133,8 @@ export default function Home() {
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
               ))}
-            </div>
+          </div>
+          <button onClick={signIn}>Login</button>
         </div>
         </SidebarBody>
       </Sidebar>

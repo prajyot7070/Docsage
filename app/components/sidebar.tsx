@@ -1,5 +1,6 @@
 "use client";
 import { cn } from "../lib/utils";
+import {signIn, signOut, useSession} from "next-auth/react"
 import Link, { LinkProps } from "next/link";
 import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -15,7 +16,6 @@ interface SidebarContextProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   animate: boolean;
-  selectLanguage: (language: string) => void;
 }
 
 const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);
@@ -33,20 +33,18 @@ export const SidebarProvider = ({
   open: openProp,
   setOpen: setOpenProp,
   animate = true,
-  selectLanguage,
 }: {
   children: React.ReactNode;
   open?: boolean;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   animate?: boolean;
-  selectLanguage: (language: string) => void;
 }) => {
   const [openState, setOpenState] = useState(false);
   const open = openProp !== undefined ? openProp : openState;
   const setOpen = setOpenProp !== undefined ? setOpenProp : setOpenState;
 
   return (
-    <SidebarContext.Provider value={{ open, setOpen, animate, selectLanguage }}>
+    <SidebarContext.Provider value={{ open, setOpen, animate }}>
       {children}
     </SidebarContext.Provider>
   );
@@ -57,17 +55,27 @@ export const Sidebar = ({
   open,
   setOpen,
   animate,
-  selectLanguage,
 }: {
   children: React.ReactNode;
   open?: boolean;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   animate?: boolean;
-  selectLanguage: (language: string) => void;
 }) => {
+  const { data: session } = useSession();
   return (
-    <SidebarProvider open={open} setOpen={setOpen} animate={animate} selectLanguage={selectLanguage}>
+    <SidebarProvider open={open} setOpen={setOpen} animate={animate}>
+      <div>
+        {/* Render different UI elements based on session state */}
+        {session ? (
+          <div>
+            <p>Welcome, {session.user?.name}</p>
+            <button onClick={() => signOut()}>Sign Out</button>
+          </div>
+        ) : (
+          <button onClick={() => signIn()}>Sign In</button>
+        )}
       {children}
+      </div>
     </SidebarProvider>
   );
 };
@@ -102,7 +110,6 @@ export const DesktopSidebar = ({
         {...props}
       >
         {children}
-        <LanguageSelect />
       </motion.div>
     </>
   );
@@ -150,35 +157,11 @@ export const MobileSidebar = ({
                 <IconX />
               </div>
               {children}
-              <LanguageSelect />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
     </>
-  );
-};
-
-const LanguageSelect = () => {
-  const { selectLanguage } = useSidebar();
-  const languages = ["Python", "C", "Cpp"];
-
-  return (
-    <div className="mt-4">
-      <p className="text-neutral-700 dark:text-neutral-200 mb-2">Select Language:</p>
-      <ul>
-        {languages.map((language) => (
-          <li key={language}>
-            <button
-              onClick={() => selectLanguage(language.toLowerCase())}
-              className="text-neutral-700 dark:text-neutral-200 py-1 px-2 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded"
-            >
-              {language}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 };
 
